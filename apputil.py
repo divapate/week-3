@@ -24,5 +24,6 @@ def to_binary(n):
     return ''.join(reversed(bits))
 
 print(to_binary(25))
+print(to_binary(144))
 
 # def task_i():
