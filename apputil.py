@@ -17,8 +17,6 @@ def fibonacci(n):
         a, b = b, a + b
     return a
 
-print(fibonacci(12))  
-
 def to_binary(n):
     """Convert an integer to its binary representation as a string."""
     if n == 0:
@@ -31,8 +29,6 @@ def to_binary(n):
 
     return "".join(reversed(bits))
 
-
-print(to_binary(10))
 
 
 def task_1():
