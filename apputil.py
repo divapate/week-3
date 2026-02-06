@@ -41,50 +41,24 @@ def task_1():
 
      # Clean gender without changing the overall missing-count ordering
     df["gender"] = (
-        df["gender"]
-        .astype("string")
-        .str.strip()
-        .str.lower()
-        .replace({"": pd.NA})
-        .replace({
-            "m": "male",
-            "h": "male",
-            "f": "female",
-            "w": "female",
-            "g": "female",
-        })
-    )
-
-    # anything else (like "?", etc.) becomes missing
-    df.loc[~df["gender"].isin(["male", "female"]), "gender"] = pd.NA
-
-
-
-    missing_counts = df.isna().sum()
-   
-
-    print("missing_counts (sorted):")
-    print(missing_counts.sort_values())
-
-    print("\nfirst_name unique samples (incl NA):")
-    print(df["first_name"].astype("string").value_counts(dropna=False).head(10))
-
-    print("\ngender unique samples (incl NA):")
-    print(df["gender"].astype("string").value_counts(dropna=False).head(10))
-
-    # sorted_columns = missing_counts.sort_values().index.tolist()
-    
-    sorted_columns = (
-    missing_counts
-    .reset_index()
-    .rename(columns={"index": "col", 0: "n_missing"})
-    .sort_values(["n_missing", "col"], kind="mergesort")  # tie-break alphabetically
-    ["col"]
-    .tolist()
+    df["gender"]
+    .astype("string")
+    .str.strip()
+    .str.lower()
+    .replace({"": pd.NA, "m": "male", "w": "female"})
 )
 
-    return sorted_columns
+    df.loc[~df["gender"].isin(["male", "female"]), "gender"] = pd.NA
 
+    missing_counts = df.isna().sum()
+    sorted_columns = missing_counts.sort_values().index.tolist()
+
+    # print("first_name counts (including missing):")
+    # print(df["first_name"].astype("string").value_counts(dropna=False))
+
+    # print("\ngender counts (including missing):")
+    # print(df["gender"].astype("string").value_counts(dropna=False))
+    return sorted_columns
 
 def task_2():
     df = df_bellevue.copy()
