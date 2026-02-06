@@ -39,16 +39,23 @@ def task_1():
         "treating blanks as missing."
     )
 
-    df["gender"] = (
-        df["gender"]
-        .astype(str)
-        .str.strip()
-        .str.lower()
-        .replace({"m": "male", "f": "female", "nan": pd.NA})
-    )
+     # Keep real missing values as missing (avoid astype(str) which turns NaN -> "nan")
+    s = df["gender"]
+
+    # Normalize strings only
+    s = s.astype("string").str.strip().str.lower()
+
+    # Treat blanks as missing
+    s = s.replace({"": pd.NA})
+
+    # Map abbreviations
+    s = s.replace({"m": "male", "f": "female"})
+
+    df["gender"] = s
+
 
     missing_counts = df.isna().sum()
-    sorted_columns = missing_counts.sort_values(kind='stable').index.tolist()
+    sorted_columns = missing_counts.sort_values().index.tolist()
 
     return sorted_columns
 
