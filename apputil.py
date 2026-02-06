@@ -48,7 +48,7 @@ def task_1():
     )
 
     missing_counts = df.isna().sum()
-    sorted_columns = missing_counts.sort_values().index.tolist()
+    sorted_columns = missing_counts.sort_values(kind='stable').index.tolist()
 
     return sorted_columns
 
