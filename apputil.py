@@ -41,29 +41,23 @@ def task_1():
     df = df_bellevue.copy()
 
     print(
-        "Cleaning gender column: normalizing values and "
-        "treating blanks as missing."
+        "Cleaning gender column: treating blank values as missing."
     )
 
+    # ONLY fix blank gender values — do not normalize labels
     df["gender"] = (
         df["gender"]
         .astype(str)
         .str.strip()
-        .str.lower()
-        .replace(
-            {
-                "": pd.NA,        # ← THIS FIXES THE TEST
-                "nan": pd.NA,
-                "m": "male",
-                "f": "female",
-            }
-        )
+        .replace("", pd.NA)
+        .replace("nan", pd.NA)
     )
 
     missing_counts = df.isna().sum()
     sorted_columns = missing_counts.sort_values().index.tolist()
 
     return sorted_columns
+
 
 
 def task_2():
