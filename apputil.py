@@ -50,7 +50,14 @@ def task_1():
         .astype(str)
         .str.strip()
         .str.lower()
-        .replace({"m": "male", "f": "female", "nan": pd.NA})
+        .replace(
+            {
+                "": pd.NA,        # ← THIS FIXES THE TEST
+                "nan": pd.NA,
+                "m": "male",
+                "f": "female",
+            }
+        )
     )
 
     missing_counts = df.isna().sum()
