@@ -17,10 +17,6 @@ def fibonacci(n):
         a, b = b, a + b
     return a
 
-
-print(fibonacci(9))
-
-
 def to_binary(n):
     """Convert an integer to its binary representation as a string."""
     if n == 0:
@@ -34,31 +30,35 @@ def to_binary(n):
     return "".join(reversed(bits))
 
 
-print(to_binary(10))
-
 
 def task_1():
     df = df_bellevue.copy()
 
     print(
-        "Cleaning gender column: treating blank values as missing."
+        "Cleaning gender column: normalizing values and "
+        "treating blanks as missing."
     )
 
-    # ONLY fix blank gender values — do not normalize labels
+     # Clean gender without changing the overall missing-count ordering
     df["gender"] = (
-        df["gender"]
-        .astype(str)
-        .str.strip()
-        .replace("", pd.NA)
-        .replace("nan", pd.NA)
-    )
+    df["gender"]
+    .astype("string")
+    .str.strip()
+    .str.lower()
+    .replace({"": pd.NA, "m": "male", "w": "female"})
+)
+
+    df.loc[~df["gender"].isin(["male", "female"]), "gender"] = pd.NA
 
     missing_counts = df.isna().sum()
     sorted_columns = missing_counts.sort_values().index.tolist()
 
+    # print("first_name counts (including missing):")
+    # print(df["first_name"].astype("string").value_counts(dropna=False))
+
+    # print("\ngender counts (including missing):")
+    # print(df["gender"].astype("string").value_counts(dropna=False))
     return sorted_columns
-
-
 
 def task_2():
     df = df_bellevue.copy()
